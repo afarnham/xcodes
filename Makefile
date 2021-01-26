@@ -27,8 +27,8 @@ xcodes: $(SOURCES)
 .PHONY: sign
 sign: xcodes
 	@codesign \
-		--sign "Developer ID Application: Robots and Pencils Inc. (PBH8V487HB)" \
-		--prefix com.robotsandpencils. \
+		--sign "Developer ID Application: Raymond Farnham (9UF8V9F4ZJ)" \
+		--prefix org.tinyrobot. \
 		--options runtime \
 		--timestamp \
 		"$(BUILDDIR)/release/xcodes"
@@ -46,16 +46,16 @@ notarize: zip
 	./notarize.sh "$(USERNAME)" "$(PASSWORD)" "$(ASC_PROVIDER)" xcodes.zip
 
 # E.g.
-# make bottle VERSION=0.4.0
+# make bottle VERSION=0.4.0 PLATFORM="arm_64_big_sur" #(or "mojave")
 .PHONY: bottle
 bottle: sign
 	@rm -r xcodes 2> /dev/null || true
 	@rm *.tar.gz 2> /dev/null || true
 	@mkdir -p xcodes/$(VERSION)/bin
 	@cp "$(BUILDDIR)/release/xcodes" xcodes/$(VERSION)/bin
-	@tar -zcvf xcodes-$(VERSION).mojave.bottle.tar.gz -C "$(REPODIR)" xcodes
-	shasum -a 256 xcodes-$(VERSION).mojave.bottle.tar.gz | cut -f1 -d' '
-	@open -R xcodes-$(VERSION).mojave.bottle.tar.gz
+	@tar -zcvf xcodes-$(VERSION).$(PLATFORM).bottle.tar.gz -C "$(REPODIR)" xcodes
+	shasum -a 256 xcodes-$(VERSION).$(PLATFORM).bottle.tar.gz | cut -f1 -d' '
+	@open -R xcodes-$(VERSION).$(PLATFORM).bottle.tar.gz
 
 .PHONY: install
 install: xcodes

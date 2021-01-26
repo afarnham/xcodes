@@ -15,7 +15,7 @@ echo "Uploading to notarization service"
 
 uuid=$(xcrun altool \
     --notarize-app \
-    --primary-bundle-id "com.robotsandpencils.xcodes.zip" \
+    --primary-bundle-id "org.tinyrobot.xcodes.zip" \
     --username "$username" \
     --password "$password" \
     --asc-provider "$asc_provider" \
